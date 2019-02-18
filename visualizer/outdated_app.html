@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Audio Optics</title>
+    <script src="static/p5/p5.min.js"></script>
+    <script src="static/p5/p5.dom.min.js"></script>
+    <script src="static/p5/p5.sound.min.js"></script>
+    <script src="static/p5/jquery-3.2.1.min.js"></script>
+    <script src="static/p5/jquery-ui.js"></script>
+    <script src="static/bootstrap/js/tether.js"></script>
+    <script src="static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="static/bootstrap/js/jasny-bootstrap.min.js"></script>
+    <script src="static/bootstrap/js/bootstrap-slider.js"></script>
+    <script src="static/bootstrap/js/bootstrap-colorpicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/app-style.css">
+    <link rel="stylesheet" type="text/css" href="static/p5/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="static/p5/jquery-ui.structure.css">
+    <link rel="stylesheet" type="text/css" href="static/p5/jquery-ui.theme.css">
+    <link rel="stylesheet" type="text/css" href="static/fontawesome/css/fontawesome-all.min.css">
+    <link rel="stylesheet" type="text/css" href="static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="static/bootstrap/css/jasny-bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="static/app-style.css">
+    <link rel="stylesheet" type="text/css" href="static/bootstrap/css/bootstrap-slider.css">
+    <link rel="stylesheet" type="text/css" href="static/bootstrap/css/bootstrap-colorpicker.min.css">
+</head>
+
+<body>
+    <script>
+        function openNav() {
+            document.getElementById("options-menu").style.width = "280px";
+        }
+
+        function closeNav() {
+            document.getElementById("options-menu").style.width = "0";
+        }
+
+        $(document).ready(function() {
+            openNav();
+        });
+    </script>
+
+    <div id="options-menu" class="sidebar">
+        <div class="close-btn"><a href="javascript:void(0)" onclick="closeNav()"><i class="fas fa-times-circle"></i></a></div>
+        <div class>
+            <div class="menu-element">
+                <p class="sidebar-text">Volume</p>
+                <input id="volume-slider" data-slider-id='volume-slider' type="text" data-slider-min="0" data-slider-max="11" data-slider-step="1" data-slider-value="5" />
+            </div>
+            <div class="menu-element">
+                <p class="sidebar-text">Audio Input</p>
+                <select id="options-selector" class="form-control menu-selector">
+                    <option value="custom">Custom</option>
+                    <option value="premade">Preloaded</option>
+                </select>
+            </div>
+            <div id="premade-vis" class="vis-type options-hidden">
+                <div class="menu-element">
+                    <p class="sidebar-text">Audio</p>
+                    <select id="preload-select" multiple class="form-control">
+                        <option value="one">one</option>
+                        <option value="two">two</option>
+                        <option value="three">three</option>
+                        <!-- 79, 0, 0 // 255, 153, 0 -->
+                        <option value="four">four</option>
+                        <option value="five">five</option>
+                    </select>
+                </div>
+            </div>
+            <div id="custom-vis" class="vis-type">
+                <div class="menu-element">
+                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                        <span class="btn btn-default btn-file"><span>Select Audio File</span>
+                        <input id="audio-input" type="file" />
+                        </span>
+                        <br/>
+                        <div class="sidebar-text"><span class="fileinput-filename"></span><span class="fileinput-new">No File Selected</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="options-section">
+                <div id="embedded-options-menu">
+                    <div class="menu-element">
+                        <p class="sidebar-text">Visualization Type</p>
+                        <select id="vis-selector" class="form-control menu-selector">
+                            <option value="bar">Bar</option>
+                            <option value="circle">Circle</option>
+                            <option value="wave">Wave</option>
+                            <option value="polygon">Polygon</option>
+                        </select>
+                    </div>
+
+                    <div id="bar-options" class="vis-options">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <button class="btn btn-default" data-toggle="collapse" data-target="#bar-collapse">Collapse Test Bar</a>
+                            </h4>
+                        </div>
+                        <div id="bar-collapse" class="panel-collapse collapse">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <div class="menu-element">
+                                        <input id="bars-slider" data-slider-ticks='[1, 2, 3, 4, 5, 6]' data-slider-ticks-labels='[16, 32, 64, 128, 256, 512]' data-slider-id='bars-slider' type="text" data-slider-min="0" data-slider-max="11" data-slider-step="1" data-slider-value="5" />
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="menu-element">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="border-box">
+                                            <label class="custom-control-label" for="border-box4">Borders</label>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="circle-options" class="vis-options options-hidden">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                        <button class="btn btn-default" data-toggle="collapse" data-target="#circle-bar-collapse">Collapse Test Circle</a>
+                                    </h4>
+                        </div>
+                        <div id="circle-bar-collapse" class="panel-collapse collapse">
+                            <div class="menu-element">
+                                <input id="circle-bars-slider" data-slider-id='circle-bars-slider' type="text" data-slider-min="128" data-slider-max="1024" data-slider-step="1" data-slider-value="256" />
+                            </div>
+                            <div class="menu-element">
+                                <input id="circle-offset-slider" data-slider-id='circle-offset-slider' type="text" data-slider-min="1" data-slider-max="179" data-slider-step="1" data-slider-value="1" />
+                            </div>
+                        </div>
+                    </div>
+                    <div id="sine-options" class="vis-options options-hidden">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                        <button class="btn btn-default" data-toggle="collapse" data-target="#wave-collapse">Collapse Test Wave</button>
+                            </h4>
+                        </div>
+                        <div id="wave-collapse" class="panel-collapse collapse">
+                            <!-- WAVE OPTIONS HERE -->
+                        </div>
+                    </div>
+                    <div id="polygon-options" class="vis-options options-hidden">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <button class="btn btn-default" data-toggle="collapse" data-target="#polygon-collapse">Collapse Test Polygon</a>
+                                    </h4>
+                        </div>
+                        <div id="polygon-collapse" class="panel-collapse collapse">
+                            <div class="menu-element">
+                                <input id="polygon-points-slider" data-slider-id='polygon-points-slider' type="text" data-slider-min="3" data-slider-max="20" data-slider-step="1" data-slider-value="5" />
+                            </div>
+                            <div class="menu-element">
+                                <input id="polygon-rotation-slider" data-slider-id='polygon-points-slider' type="text" data-slider-min="-20" data-slider-max="20" data-slider-step="1" data-slider-value="5" />
+                            </div>
+                            <div class="menu-element">
+                                <p class="sidebar-text">Frequency</p>
+                                <select id="polygon-freq-selector" class="form-control menu-selector">
+                                    <option value="bass">Bass</option>
+                                    <option value="lowMid">Low Mid</option>
+                                    <option value="mid">Mid</option>
+                                    <option value="highMid" selected="selected">High Mid</option>
+                                    <option value="treble">Treble</option>
+                                </select>
+                            </div>
+                            <div class="menu-element">
+                                <p class="sidebar-text">Style</p>
+                                <select id="polygon-style-selector" class="form-control menu-selector">
+                                    <option value="expand">Expand</option>
+                                    <option value="contract">Contract</option>
+                                    <option value="inverse" selected="selected">Inverse</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-element">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                        <button class="btn btn-default" data-toggle="collapse" data-target="#color-collapse">Collapse Test Circle</a>
+                                    </h4>
+                        </div>
+                        <div id="color-collapse" class="panel-collapse collapse">
+                            <div class="inline-buttons">
+                                <button type="button" id="color1-button" class="btn btn-default colorpick-btn">
+                                    <div id="color1-ex" class="color-square"></div>
+                                </button>
+                                <button type="button" id="color2-button" class="btn btn-default colorpick-btn">
+                                    <div id="color2-ex" class="color-square"></div>
+                                </button>
+                            </div>
+                            <div id="color-options">
+                                <div id="c1" class="color-button">
+                                    <div id="color1" class="input-group colorpicker-component color-button">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="top-bar">
+        <a href="javascript:void(0)" onclick="openNav()"><i class="fas fa-cog"></i></a>
+        <h4 class="loader" style="float: right; display: none;">Loading...</h4>
+        <!--<h3>Audio Optics</h3>-->
+    </div>
+    <div class="wrapper">
+
+        <script src="app/sketch.js"></script>
+        <!--<script src="app/ui.js"></script>-->
+        <div id="canvas" class="container">
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,8 @@
+bar-options
+circle-options
+sine-options
+polygon-options
+
+fft.getEnergy()
+("bass", "lowMid", "mid", "highMid", "treble")
+0 - 23988

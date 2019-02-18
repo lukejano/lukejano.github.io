@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Audio Optics</title>
+    <script src="static/p5/p5.min.js"></script>
+    <script src="static/p5/p5.dom.min.js"></script>
+    <script src="static/p5/p5.sound.min.js"></script>
+    <script src="static/p5/jquery-3.2.1.min.js"></script>
+    <script src="static/p5/jquery-ui.js"></script>
+    <script src="static/bootstrap/js/tether.js"></script>
+    <script src="static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="static/bootstrap/js/jasny-bootstrap.min.js"></script>
+    <script src="static/bootstrap/js/bootstrap-slider.js"></script>
+    <script src="static/bootstrap/js/bootstrap-colorpicker.js"></script>
+    <script src="static/bootstrap/js/bootstrap-notify.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/app-style.css">
+    <link rel="stylesheet" type="text/css" href="static/p5/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="static/p5/jquery-ui.structure.css">
+    <link rel="stylesheet" type="text/css" href="static/p5/jquery-ui.theme.css">
+    <link rel="stylesheet" type="text/css" href="static/fontawesome/css/fontawesome-all.min.css">
+    <link rel="stylesheet" type="text/css" href="static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="static/bootstrap/css/jasny-bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="static/app-style.css">
+    <link rel="stylesheet" type="text/css" href="static/bootstrap/css/bootstrap-slider.css">
+    <link rel="stylesheet" type="text/css" href="static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="static/bootstrap/css/bootstrap-colorpicker.min.css">
+    <link rel="stylesheet" type="text/css" href="static/bootstrap/css/animate.min.css">
+	<link rel="apple-touch-icon" sizes="57x57" href="/favicon/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/favicon/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/favicon/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/favicon/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/favicon/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/favicon/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/favicon/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/favicon/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-icon-180x180.png">
+	<link rel="icon" type="image/favicon/png" sizes="192x192"  href="/favicon/android-icon-192x192.png">
+	<link rel="icon" type="image/favicon/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+	<link rel="icon" type="image/favicon/png" sizes="96x96" href="/favicon/favicon-96x96.png">
+	<link rel="icon" type="image/favicon/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+	<link rel="manifest" href="/favicon/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/favicon/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+</head>
+
+<body>
+    <script>
+        function openNav() {
+            document.getElementById("options-menu").style.width = "280px";
+        }
+
+        function closeNav() {
+            document.getElementById("options-menu").style.width = "0";
+        }
+
+        $(document).ready(function() {
+            openNav();
+        });
+    </script>
+    
+    <style>
+        .card-header button {
+            width: 100%;
+        }
+    </style>
+
+    <div id="startup-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="startup-modal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" style="display: inline-block;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="startup-modal-label">Welcome to Audio Optics</h5>
+                    <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-window-close" aria-hidden="true"></i>
+                    </button>-->
+                </div>
+                <div class="modal-body">
+                    <p>Audio Optics is a music visualization application designed to correlate visual effects to the features of music.  You can visualize either a preloaded sample or custom audio in the options menu</p>
+                    <p>Click <a onclick="infoModal()">here</a> to learn more</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="infoModal()">I don't get it</button>
+                    <button type="button" class="btn btn-primary" onclick="$('#startup-modal').modal('hide')">Got it</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="info-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="info-modal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Wait a second...</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Audio Optics takes music that you upload to it and adds a spiffy visualization while playing it back to you.  There are currently 5 different
+                    visualiations to choose from...</p>
+                    <ul>
+                        <li>Bars - Visualizes the frequency or pitch of the audio</li>
+                        <li>Circle - Visualizes the frequencies, just like the bars, but in a circle</li>
+                        <li>Sine Wave - Visualizes the beat of the audio on a sine wave</li>
+                        <li>Polygon - Visualizes the beat of the audio in the shape of a normal polygon</li>
+                        <li>Waveform - Visualizes the wave representation of the audio</li>
+                    </ul>
+                    <p>Audio Optics uses features like the waveform, amplitude, and frequency spectrum of the music to create the different parts 
+                    of the visualizations.  These are explained within the different visualizations</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="infoModal2()">I still don't get it!</button>
+                    <button type="button" class="btn btn-primary" onclick="$('#info-modal').modal('hide')">Got it</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="info-modal2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="info-modal2" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" style="display: inline-block;">
+                <div class="modal-header">
+                    <h5 class="modal-title">How do I use it?</h5>
+                    <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-window-close" aria-hidden="true"></i>
+                    </button>-->
+                </div>
+                <div class="modal-body">
+                    <h5>How do I start a visualization?</h5>
+                    <p>To start the visualization, you can either select a preloaded audio option or you can upload your own
+                    audio file.</p>
+                    <b>Preloaded Audio</b>
+                    <p>To visualize preloaded audio, select "Preloaded" option underneath the "Audio Input" section of the "Primary Settings" menu.  
+                    Then select the audio option option you'd like to visualize and press the start button.</p>
+                    <b>Custom Audio</b>
+                    <p>To visualize custom audio, select "Custom" option underneath the "Audio Input" section of the "Primary Settings" menu.  
+                    Then select the audio file you would like to visualize and watch the magic happen.</p>
+                    <h5>How do I select a visualization?</h5>
+                    <p>To select a visualization, go under the "Visualization Type" section and select the visualization you would
+                    like to use.  Make sure to run a visualization to see the effects.</p>
+                    <h5>How do I customize a visualization?</h5>
+                    <p>To customize a visualization, go under the second primary menu that is labeled with the selected visualization. 
+                    Then try the options listed under the menu and see how they affect the visualization.</p>
+                    <h5>How do I change the color of my visualization?</h5>
+                    <p>To change the color of the visualization, go under the "Color Options" primary menu and use the color selector to set the color.  
+                    Click on the buttons to switch the color you are setting.</p>
+                    <i style="font-size: 10">Music provided by <a href="incompetech.com">incompetech</a> and <a hred="freemusicarchive.com">freemusicarchive</a></i>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="$('#info-modal2').modal('hide');">Got it</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="options-menu" class="sidebar">
+        <div class="close-btn"><a href="javascript:void(0)" onclick="closeNav()"><i class="fas fa-times-circle"></i></a></div>
+        <div class="options-section">
+            <!-- Primary Settings -->
+            <div>
+                <div class="card">
+                    <div class="card-header">
+                        <button id="settings-btn" class="btn btn-link" data-toggle="collapse" data-target="#settings-collapse" data-parent="#options-menu">Primary Settings</button>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <div id="settings-collapse" class="collapse in">
+                                <li class="list-group-item">
+                                    <label class="options-label" for="volume-slider">Volume</label>
+                                    <a class="info-tag" onclick="infoPopup('Volume changes the loudness of the sound processed by the webpage.  This can affect some of the visualizations.', 5000)"><i class="fas fa-info-circle"></i></a>
+                                    <input id="volume-slider" data-slider-id='volume-slider' type="text" data-slider-min="0" data-slider-max="11" data-slider-step="1" data-slider-value="5" />
+                                </li>
+                                <li class="list-group-item">
+                                    <label class="options-label" for="options-selector">Audio Input</label>
+                                    <!-- infoPopup('This selects where the audio data is coming from.  You can use premade audio samples or upload your own audio files.', 5000) -->
+                                    <a class="info-tag" onclick="infoModal2()"><i class="fas fa-info-circle"></i></a>
+                                    <select id="options-selector" class="form-control menu-selector">
+                                        <option value="custom">Custom</option>
+                                        <option value="premade">Premade</option>
+                                        <option value="input">Input</option>
+                                    </select>
+                                </li>
+                                <li class="list-group-item">
+                                    <div id="premade-vis" class="vis-type options-hidden">
+                                        <label class="options-label">Audio</label>
+                                        <a class="info-tag" onclick="infoModal2()"><i class="fas fa-info-circle"></i></a>
+                                        <select multiple id="preloaded-select" class="form-control">
+                                            <option value="kill.mp3">Killing Time</option>
+                                            <option value="pueblo.mp3">Pueblo Village</option>
+                                            <option value="easy.mp3">Easy Going</option>
+                                            <!-- <option value="two">two</option>
+                                            <option value="three">three</option>
+                                            <!-- 79, 0, 0 // 255, 153, 0 -->
+                                            <!-- <option value="four">four</option>
+                                            <option value="five">five</option> -->
+                                        </select><br/>
+                                        <button type="button" id="preloaded-play" class="btn btn-default colorpick-btn" style="float: right">
+                                            <i class="far fa-play-circle"></i>
+                                        </button><br/><br/>
+                                    </div>
+                                    <div id="custom-vis" class="vis-type">
+                                        <a class="info-tag" onclick="infoPopup('You can visualize a custom audio file here.  Click \'Select Audio File\' and select your audio file to visualize it.', 5000)"><i class="fas fa-info-circle"></i></a>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <!-- Came back after about a year and found that this button doesn't work anymore - at least on firefox.  This fix should do
+                                            the trick, but if it stops working or something in the future, go to sketch.js and see line 194 (2-13-19) -->
+                                            <button id="input-button" class="btn btn-link btn-file">
+                                                <span>Select Audio File</span>
+                                                <!-- <input id="audio-input" type="file" /> -->
+                                            </button>
+                                            <input id="audio-input" class="options-hidden" type="file" />
+                                            <br/>
+                                            <div class="options-label"><span class="fileinput-filename"></span><span class="fileinput-new">No File Selected</span></div>
+                                        </div>
+                                    </div>
+                                    <div id="input-vis" class="vis-type options-hidden">
+                                        <p>Just click the play button and watch the magic happen!</p>
+                                        <i>Note: Works really well with analog sound :)</i>
+                                        <button type="button" id="input-play" class="btn btn-default colorpick-btn" style="float: right">
+                                            <i class="far fa-play-circle"></i>
+                                        </button><br/><br/>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <label class="options-label">Visualization Type</label>
+                                    <a class="info-tag" onclick="infoPopup('This is where you select the type of visualization you\'d like to use.  Don\'t worry - all of the elements of the visualizations will be explained in their individual settings menus.', 5000)"><i class="fas fa-info-circle"></i></a>
+                                    <select id="vis-selector" class="form-control menu-selector">
+                                        <option value="bar">Bar</option>
+                                        <option value="circle">Circle</option>
+                                        <option value="wave">Sine Wave</option>
+                                        <option value="polygon">Polygon</option>
+                                        <option value="waveform">Waveform</option>
+                                    </select>
+                                </li>
+                                <li class="list-group-item">
+                                    <label class="options-label">Help Me</label><br/>
+                                    <a onclick="infoModal()">What is Audio Optics?</a><br/>
+                                    <a onclick="infoModal2()">How do I use it?</a><br/>
+                                </li>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="options-section">
+            <!-- Visualization Selection-->
+            <div id="embedded-options-menu">
+                <!-- Bars Options -->
+                <div id="bar-options" class="vis-options">
+                    <div class="card">
+                        <div class="card-header">
+                            <button id="bar-btn" class="btn btn-link" data-toggle="collapse" data-target="#bar-collapse" data-parent="#options-menu">Bar Options</button>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group">
+                                <div id="bar-collapse" class="collapse in">
+                                    <li class="list-group-item">
+                                        <label class="options-label" for="bars-slider">Amount of Bars</label>
+                                        <a class="info-tag" onclick="infoPopup('This sets the amount of bars to visualize. The more bars, the less condensed the information is', 5000)"><i class="fas fa-info-circle"></i></a>
+                                        <input id="bars-slider" data-slider-tooltip="hide" data-slider-ticks='[1, 2, 3, 4, 5, 6]' data-slider-ticks-labels='[16, 32, 64, 128, 256, 512]' data-slider-id='bars-slider' type="text" data-slider-min="0" data-slider-max="11" data-slider-step="1" data-slider-value="5" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="border-box">
+                                            <label class="options-label" for="border-box">Borders</label>
+                                            <a class="info-tag" onclick="infoPopup('This puts black outlines around the bars. I think this looks ugly, but some people prefer it', 5000)"><i class="fas fa-info-circle"></i></a>
+                                        </div>
+                                    </li>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Circle Options -->
+                <div id="circle-options" class="vis-options ">
+                    <div class="card">
+                        <div class="card-header">
+                            <button id="circle-btn" class="btn btn-link" data-toggle="collapse" data-target="#circle-collapse" data-parent="#options-menu">Circle Options</button>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group">
+                                <div id="circle-collapse" class="collapse in">
+                                    <li class="list-group-item">
+                                        <label class="options-label" for="circle-bars-slider">Amount of Bars</label>
+                                        <a class="info-tag" onclick="infoPopup('This sets the amount of bars to be visualized around the circle.  This can look confusing, so I\'d recommend changing this before changing the circle offset slider', 5000)"><i class="fas fa-info-circle"></i></a>
+                                        <input id="circle-bars-slider" data-slider-id='circle-bars-slider' data-slider-tooltip="hide" data-slider-ticks='[1, 2, 3, 4, 5]' data-slider-ticks-labels='[64, 128, 256, 512, 1024]' type="text" data-slider-min="1" data-slider-max="5" data-slider-step="1" data-slider-value="3" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <label class="options-label" for="">Circle Offset</label>
+                                        <a class="info-tag" onclick="infoPopup('This alters how far around the circle each bar goes.  Changing this changes where the individual frequencies line up, so it can make a very cool affect if used properly', 5000)"><i class="fas fa-info-circle"></i></a>
+                                        <input id="circle-offset-slider" data-slider-id='circle-offset-slider' type="text" data-slider-min="1" data-slider-max="179" data-slider-step="1" data-slider-value="1" />
+                                    </li>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Polygon Options -->
+                <div id="polygon-options" class="vis-options ">
+                    <div class="card">
+                        <div class="card-header">
+                            <button id="polygon-btn" class="btn btn-link" data-toggle="collapse" data-target="#polygon-collapse" data-parent="#options-menu">Polygon Options</button>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group">
+                                <div id="polygon-collapse" class="collapse in">
+                                    <li class="list-group-item">
+                                        <label class="options-label" for="polygon-points-slider">Amount of Polygon Sides</label>
+                                        <a class="info-tag" onclick="infoPopup('This changes the amount of sides that the visualized regular polygon has', 5000)"><i class="fas fa-info-circle"></i></a>
+                                        <input id="polygon-points-slider" data-slider-id='polygon-points-slider' type="text" data-slider-min="3" data-slider-max="20" data-slider-step="1" data-slider-value="5" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <label class="options-label" for="polygon-rotation-slider">Polygon Spin</label>
+                                        <a class="info-tag" onclick="infoPopup('This changes how fast the polygon spins around the center', 5000)"><i class="fas fa-info-circle"></i></a>
+                                        <input id="polygon-rotation-slider" data-slider-id='polygon-rotation-slider' type="text" data-slider-min="-20" data-slider-max="20" data-slider-step="1" data-slider-value="5" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <label class="options-label">Frequency</label>
+                                        <a class="info-tag" onclick="infoPopup('This changes what frequency is visualized.  For example, if you select \'Bass\', the polygon will bounce based on the bass frequencies of the audio.  Higher frequencies tend to be bouncier than lower frequencies.', 5000)"><i class="fas fa-info-circle"></i></a>
+                                        <select id="polygon-freq-selector" class="form-control menu-selector">
+                                            <option value="bass">Bass</option>
+                                            <option value="lowMid">Low Mid</option>
+                                            <option value="mid">Mid</option>
+                                            <option value="highMid" selected="selected">High Mid</option>
+                                            <option value="treble">Treble</option>
+                                        </select>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <label class="options-label">Polygon Style</label>
+                                        <a class="info-tag" onclick="infoPopup('This changes the format of the polygon visualization - Play around with it!', 5000)"><i class="fas fa-info-circle"></i></a>
+                                        <select id="polygon-style-selector" class="form-control menu-selector">
+                                            <option value="expand">Expand</option>
+                                            <option value="contract">Contract</option>
+                                            <option value="inverse" selected="selected">Inverse</option>
+                                        </select>
+                                    </li>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Sine Wave Options -->
+                <div id="sine-options" class="vis-options ">
+                    <div class="card">
+                        <div class="card-header">
+                            <button id="sine-btn" class="btn btn-link" data-toggle="collapse" data-target="#sine-collapse" data-parent="#options-menu">Sine Wave Options</button>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group">
+                                <div id="sine-collapse" class="collapse in">
+                                    <li class="list-group-item">
+                                        <label class="options-label" for="">Sine Wave Size</label>
+                                        <a class="info-tag" onclick="infoPopup('This changes the relative amplitude of the sine wave.  The amplitude also changes based on the \'Frequency\' feature (not sine wave frequency)', 5000)"><i class="fas fa-info-circle"></i></a>
+                                        <input id="sine-size-slider" data-slider-id='sine-size-slider' type="text" data-slider-min="5" data-slider-max="100" data-slider-step="1" data-slider-value="80" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <label class="options-label" for="">Sine Wave Frequency</label>
+                                        <a class="info-tag" onclick="infoPopup('This changes the frequency of the wave.  To change the frequency of the audio visualized, look at the \'Frequency\' feature', 5000)"><i class="fas fa-info-circle"></i></a>
+                                        <input id="sine-freq-slider" data-slider-id='sine-freq-slider' type="text" data-slider-min="5" data-slider-max="100" data-slider-step="1" data-slider-value="50" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="checkbox" class="custom-control-input" id="sine-filled-box">
+                                        <a class="info-tag" onclick="infoPopup('Fills the area underneath the wave', 5000)"><i class="fas fa-info-circle"></i></a>
+                                        <label class="options-label" for="sine-filled-box">Filled</label>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <label class="options-label">Frequency</label>
+                                        <a class="info-tag" onclick="infoPopup('This changes what frequency is visualized.  For example, if you select \'Bass\', the polygon will bounce based on the bass frequencies of the audio.  Higher frequencies tend to be bouncier than lower frequencies.', 5000)"><i class="fas fa-info-circle"></i></a>
+                                        <select id="sine-freq-selector" class="form-control menu-selector">
+                                            <option value="bass">Bass</option>
+                                            <option value="lowMid">Low Mid</option>
+                                            <option value="mid">Mid</option>
+                                            <option value="highMid" selected="selected">High Mid</option>
+                                            <option value="treble">Treble</option>
+                                        </select>
+                                    </li>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Waveform Options -->
+                <div id="waveform-options" class="vis-options ">
+                    <div class="card">
+                        <div class="card-header">
+                            <button id="waveform-btn" class="btn btn-link" data-toggle="collapse" data-target="#waveform-collapse" data-parent="#options-menu">Waveform Options</button>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group">
+                                <div id="waveform-collapse" class="collapse in">
+                                    <li class="list-group-item">
+                                        <label class="options-label" for="">Waveform Size</label>
+                                        <a class="info-tag" onclick="infoPopup('Length of the wave visualized', 5000)"><i class="fas fa-info-circle"></i></a>
+                                        <input id="waveform-size-slider" data-slider-id='waveform-size-slider' type="text" data-slider-min="5" data-slider-max="100" data-slider-step="1" data-slider-value="80" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="checkbox" class="custom-control-input" id="waveform-filled-box">
+                                        <label class="options-label" for="polygon-points-slider">Filled</label>
+                                        <a class="info-tag" onclick="infoPopup('Fills the area underneath the wave', 5000)"><i class="fas fa-info-circle"></i></a>
+                                    </li>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Color Options -->
+                <div id="color-options" class="vis-options">
+                    <div class="card">
+                        <div class="card-header">
+                            <button id="color-btn" class="btn btn-link" data-toggle="collapse" data-target="#color-collapse" data-parent="#options-menu">Color Options</button>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group">
+                                <div id="color-collapse" class="collapse in">
+                                    <li class="list-group-item">
+                                        <div class="inline-buttons">
+                                            <button type="button" id="color1-button" class="btn btn-default colorpick-btn">
+                                                <div id="color1-ex" class="color-square"></div>
+                                            </button>
+                                            <button type="button" id="color2-button" class="btn btn-default colorpick-btn">
+                                                <div id="color2-ex" class="color-square"></div>
+                                            </button>
+                                        </div>
+                                        <a class="info-tag" onclick="infoPopup('Selects the colors of the visualization - Click the color button and the select the color you\'d like to use', 5000)"><i class="fas fa-info-circle"></i></a>
+                                    </li>
+                                    <li id="colorpicker-container" class="list-group-item">
+                                        <div id="c1" class="color-button">
+                                            <div id="color1" class="input-group colorpicker-component color-button"></div>
+                                        </div>
+                                    </li>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="top-bar">
+        <a href="javascript:void(0)" onclick="openNav()"><i class="fas fa-cog"></i></a>
+        <h4 class="loader" style="float: right; display: none;">Loading...</h4>
+        <!--<h3>Audio Optics</h3>-->
+    </div>
+    <div class="wrapper">
+        <script src="app/sketch.js"></script>
+        <!--<script src="app/ui.js"></script>-->
+        <div id="canvas" class="container">
+        </div>
+    </div>
+</body>
+
+</html>
