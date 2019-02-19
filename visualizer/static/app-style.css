@@ -1,0 +1,115 @@
+body, html {
+    overflow: hidden;
+    background-color: #000 !important;
+}
+
+.top-bar {
+    display: inline-block;
+}
+
+.top-bar a {
+    padding-left: 4px;
+    padding-top: 4px;
+    color: #EEE;
+    font-size: 24px;
+}
+
+.top-bar .loader {
+    float: right;
+}
+
+.sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #EEE;
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+.sidebar a {
+    padding: 4px 4px 4px 4px;
+}
+.sidebar-text {
+    font-weight: bold;
+    color: #222;
+    padding: 4px 4px 4px 4px;
+}
+.close-btn {
+    /* top right bottom left */
+    padding: 4px 4px 12px 4px;
+}
+.close-btn a {
+    color: #111;
+    font-size: 24px;
+    padding-left: 4px;
+    padding-top: 4px;
+}
+.open-btn {
+    width: 34px;
+}
+
+.menu-element {
+    padding: 6px 4px 6px 4px;
+}
+
+.menu-selector {
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 90%;
+}
+
+.loader {
+    color: #EEE;
+}
+
+.options-hidden {
+    display: none;
+}
+/*
+.options-section {
+    background-color: #BBB;
+    border-radius: 8px;
+}*/
+
+.color-button {
+    width: 15px;
+}
+
+.inline-buttons {
+    display: inline-block;
+}
+
+.color-square {
+    width: 15px;
+    height: 15px;
+}
+
+.colorpick-btn {
+    display: inline-block;
+}
+
+.info-tag {
+    float: right;
+    /*color: #222;*/
+}
+
+.info-tag:hover {
+    /*color: #444;*/
+}
+
+.modal-dialog {
+    overflow: visible;
+    position: absolute;
+}
+
+.modal {
+    position: absolute;
+    display: inline-block;
+}
+
+.modal p,.modal li {
+    font-size: 12px;
+}
